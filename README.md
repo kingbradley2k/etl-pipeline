@@ -78,3 +78,15 @@ pytest tests/test_extract.py -q
 If your organization intercepts HTTPS traffic, configure its trusted CA bundle
 in the operating-system certificate store or set `REQUESTS_CA_BUNDLE` to the
 approved CA file. Do not disable TLS verification.
+
+## Phase 3 data-quality rules
+
+The transformation layer converts raw API payloads into a predictable pandas
+schema. It trims text, normalizes supported field-name variants, coerces data
+types, converts local API timestamps to UTC, removes duplicate observations,
+and returns rejected records with explicit reasons.
+
+Required fields are location, coordinates, timestamp, temperature, humidity,
+and wind speed. Latitude must be -90 to 90, longitude -180 to 180, temperature
+-90 to 60 °C, humidity 0 to 100%, and wind speed cannot be negative. Pressure
+is optional but, when supplied, must be 300 to 1200 hPa.
