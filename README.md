@@ -51,6 +51,30 @@ mean sea-level pressure, weather code, latitude, and longitude.
 
 ## Development status
 
-Phase 1 is project setup. Extraction, transformation, loading, scheduling,
+Phase 2 implements extraction with bounded HTTP retries, request timeouts,
+per-city logging, and raw JSON archival. Transformation, loading, scheduling,
 analytics, dashboard functionality, Docker services, and full tests will be
 introduced in their respective later phases.
+
+## Run Phase 2 extraction
+
+Create a local `.env` from `.env.example`, activate the virtual environment, and
+run the extraction module:
+
+```powershell
+Copy-Item .env.example .env
+.\.venv\Scripts\Activate.ps1
+python -m src.extract
+```
+
+Each successful city request creates an ignored file named like
+`data/raw/weather_nairobi_2026-09-18T120000Z.json`. Test without contacting the
+API with:
+
+```powershell
+pytest tests/test_extract.py -q
+```
+
+If your organization intercepts HTTPS traffic, configure its trusted CA bundle
+in the operating-system certificate store or set `REQUESTS_CA_BUNDLE` to the
+approved CA file. Do not disable TLS verification.

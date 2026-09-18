@@ -29,6 +29,9 @@ class Settings:
     raw_data_dir: Path
     schedule_minutes: int
     timezone: str
+    http_timeout_seconds: int
+    http_max_retries: int
+    http_retry_backoff_seconds: float
 
 
 def get_settings() -> Settings:
@@ -43,4 +46,9 @@ def get_settings() -> Settings:
         raw_data_dir=PROJECT_ROOT / os.getenv("RAW_DATA_DIR", "data/raw"),
         schedule_minutes=int(os.getenv("SCHEDULE_MINUTES", "60")),
         timezone=os.getenv("TIMEZONE", "Africa/Nairobi"),
+        http_timeout_seconds=int(os.getenv("HTTP_TIMEOUT_SECONDS", "15")),
+        http_max_retries=int(os.getenv("HTTP_MAX_RETRIES", "3")),
+        http_retry_backoff_seconds=float(
+            os.getenv("HTTP_RETRY_BACKOFF_SECONDS", "1")
+        ),
     )
