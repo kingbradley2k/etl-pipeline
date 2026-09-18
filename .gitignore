@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Environment and secrets
+.env
+
+# Runtime data and logs
+data/raw/*.json
+logs/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS and editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

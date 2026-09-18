@@ -1,0 +1,8 @@
+APScheduler>=3.10,<4
+pandas>=2.2,<4
+psycopg[binary]>=3.2,<4
+pytest>=8,<9
+python-dotenv>=1,<2
+requests>=2.32,<3
+SQLAlchemy>=2.0,<3
+streamlit>=1.40,<2
