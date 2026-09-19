@@ -90,3 +90,27 @@ Required fields are location, coordinates, timestamp, temperature, humidity,
 and wind speed. Latitude must be -90 to 90, longitude -180 to 180, temperature
 -90 to 60 °C, humidity 0 to 100%, and wind speed cannot be negative. Pressure
 is optional but, when supplied, must be 300 to 1200 hPa.
+
+## Phase 4 PostgreSQL schema
+
+The database design separates reusable location metadata from time-series
+observations and pipeline audit data:
+
+| Table | Purpose | Key integrity controls |
+| --- | --- | --- |
+| `locations` | City, country, and geographic coordinates | Unique city/country and valid coordinate ranges |
+| `weather_observations` | Clean weather measurements at a point in time | Foreign keys, measurement checks, and unique location/time/source observations |
+| `pipeline_runs` | Execution status, counts, timestamps, and errors | Valid statuses, non-negative counts, and completion rules |
+
+`weather_observations` has a unique `(location_id, observed_at, source)` key.
+That database-level rule is the final safeguard against duplicate scheduled
+observations, even if an application process retries a run.
+
+To create the schema after PostgreSQL is available:
+
+```powershell
+psql -h localhost -U weather_user -d weather_etl -f sql/schema.sql
+```
+
+The next phase will connect with SQLAlchemy and execute this schema through the
+application workflow; this phase intentionally defines only the database model.
