@@ -114,3 +114,12 @@ psql -h localhost -U weather_user -d weather_etl -f sql/schema.sql
 
 The next phase will connect with SQLAlchemy and execute this schema through the
 application workflow; this phase intentionally defines only the database model.
+
+## Phase 5 loading behaviour
+
+`src/load.py` uses SQLAlchemy with the PostgreSQL connection values in `.env`.
+It creates a `pipeline_runs` audit row, upserts locations, and inserts only
+validated observations in one transaction. If any database operation fails,
+SQLAlchemy rolls back the transaction. PostgreSQL's unique observation key and
+`ON CONFLICT DO NOTHING` make repeated loads idempotent; duplicates are counted
+and logged rather than inserted.
