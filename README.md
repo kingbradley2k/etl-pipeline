@@ -150,3 +150,17 @@ APScheduler permits only one in-process run at a time, coalesces missed runs,
 and gives a delayed run a five-minute grace period. The database unique key is
 still the final duplicate-prevention layer. For one manual development run, use
 `python -m src.pipeline` instead.
+
+## Phase 8 analytical SQL
+
+[sql/analytics.sql](sql/analytics.sql) contains ten PostgreSQL queries for
+daily temperature statistics, location comparisons, humidity, weather-condition
+distribution, daily ranges, latest records, missing observations, and pipeline
+success/failure metrics. Day-based queries use the `Africa/Nairobi` time zone
+while the database continues storing timestamps in UTC.
+
+After applying the schema and loading data, execute the file with:
+
+```powershell
+psql -h localhost -U weather_user -d weather_etl -f sql/analytics.sql
+```
