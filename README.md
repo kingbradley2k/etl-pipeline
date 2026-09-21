@@ -123,3 +123,16 @@ validated observations in one transaction. If any database operation fails,
 SQLAlchemy rolls back the transaction. PostgreSQL's unique observation key and
 `ON CONFLICT DO NOTHING` make repeated loads idempotent; duplicates are counted
 and logged rather than inserted.
+
+## Phase 6 pipeline orchestration
+
+Run the full pipeline once with:
+
+```powershell
+python -m src.pipeline
+```
+
+The orchestrator creates a `pipeline_runs` audit entry, executes extraction,
+transformation, and loading in order, and records final counts and status. If a
+stage fails, its name and error are logged and the audit row is marked failed;
+the original exception is then raised to make operational failures visible.
