@@ -136,3 +136,17 @@ The orchestrator creates a `pipeline_runs` audit entry, executes extraction,
 transformation, and loading in order, and records final counts and status. If a
 stage fails, its name and error are logged and the audit row is marked failed;
 the original exception is then raised to make operational failures visible.
+
+## Phase 7 scheduling
+
+Run the hourly scheduler with:
+
+```powershell
+python -m src.scheduler
+```
+
+`SCHEDULE_MINUTES` in `.env` controls the interval and defaults to `60`.
+APScheduler permits only one in-process run at a time, coalesces missed runs,
+and gives a delayed run a five-minute grace period. The database unique key is
+still the final duplicate-prevention layer. For one manual development run, use
+`python -m src.pipeline` instead.
