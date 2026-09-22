@@ -164,3 +164,15 @@ After applying the schema and loading data, execute the file with:
 ```powershell
 psql -h localhost -U weather_user -d weather_etl -f sql/analytics.sql
 ```
+
+## Phase 9 dashboard
+
+The Streamlit dashboard queries PostgreSQL directly and provides location/date
+filters, weather KPIs, pipeline health, and temperature, humidity,
+weather-condition, and daily-range charts. It does not read `data/raw/`.
+
+Start it after PostgreSQL contains observations:
+
+```powershell
+streamlit run dashboard/app.py
+```
