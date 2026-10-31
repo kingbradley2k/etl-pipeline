@@ -176,3 +176,32 @@ Start it after PostgreSQL contains observations:
 ```powershell
 streamlit run dashboard/app.py
 ```
+
+## Phase 11 Docker
+
+Docker Compose starts three services: PostgreSQL, the scheduled ETL process,
+and the Streamlit dashboard. The schema is initialized when PostgreSQL creates
+its data volume for the first time.
+
+```powershell
+Copy-Item .env.example .env
+# Edit .env and set a strong POSTGRES_PASSWORD.
+docker compose up --build
+```
+
+Open the dashboard at `http://localhost:8501`. To run a single pipeline job in
+the Compose environment instead of waiting for the scheduler:
+
+```powershell
+docker compose run --rm etl python -m src.pipeline
+```
+
+Run tests inside the application image with:
+
+```powershell
+docker compose run --rm etl pytest -q
+```
+
+PostgreSQL keeps its data in the named `postgres_data` volume. The initialization
+SQL runs only when that volume is first created; do not remove a volume unless
+you intentionally want to discard its database data.
